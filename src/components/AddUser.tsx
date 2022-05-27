@@ -11,8 +11,8 @@ interface User {
 }
 export function AddUser(): JSX.Element {
   const [data, setData] = useState<User>();
-  const [show, setShow] = useState(true);
-  const [showUser, setShowUser] = useState(false);
+  const [show, setShow] = useState<boolean>(true);
+  const [showUser, setShowUser] = useState<boolean>(false);
   function genUser() {
     fetch("https://randomuser.me/api/")
       .then((res) => res.json())
@@ -30,24 +30,44 @@ export function AddUser(): JSX.Element {
     setShow(false);
     setShowUser(true);
   }
-  const userStyle = {
-    display: "flex",
-    margin: "auto",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: "100px",
+  const addUserStyle = {
+    userStyle: {
+      display: "flex",
+      margin: "auto",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: "100px",
+    },
+    botButtonStyle: {
+      borderRadius: "10px",
+      backgroundColor: "#75F336",
+      border: "none",
+    },
+    addButtonStyle: {
+      border: "none",
+      borderRadius: "10px",
+      backgroundColor: "#75F336",
+    },
+    topDivStyle: {
+      display: "flex",
+      justifyContent: "center",
+      marginTop: "20vh",
+      height: "50px",
+    },
   };
-  const botButtonStyle = {
-    borderRadius: "10px",
-    backgroundColor: "#75F336",
-    border: "none",
-  };
+
   return (
     <>
-      {show ? <button onClick={genUser}>Generate Random User</button> : null}
+      {show ? (
+        <div style={addUserStyle.topDivStyle}>
+          <button onClick={genUser} style={addUserStyle.addButtonStyle}>
+            Generate Random User
+          </button>
+        </div>
+      ) : null}
       {showUser ? (
         <div>
-          <div style={userStyle}>
+          <div style={addUserStyle.userStyle}>
             <img src={data?.img} style={{ width: "400px" }} />
             <div style={{ marginLeft: "30px" }}>
               <p>name:{data?.name}</p>
@@ -62,9 +82,11 @@ export function AddUser(): JSX.Element {
             className="d-flex m-5"
             style={{ justifyContent: "space-evenly" }}
           >
-            <button style={botButtonStyle}>Add user to List</button>
-            <button style={botButtonStyle}>Generate New</button>
-            <button style={botButtonStyle}>Cancel</button>
+            <button style={addUserStyle.botButtonStyle}>
+              Add user to List
+            </button>
+            <button style={addUserStyle.botButtonStyle}>Generate New</button>
+            <button style={addUserStyle.botButtonStyle}>Cancel</button>
           </div>
         </div>
       ) : null}
